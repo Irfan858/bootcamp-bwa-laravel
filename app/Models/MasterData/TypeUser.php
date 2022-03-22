@@ -28,4 +28,11 @@ class TypeUser extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    //Mengirimkan Relasi Ke Tabel detail_user (One To Many)
+    public function detail_user()
+    {
+        
+        return $this->hasMany('App\Models\ManagementAcess\DetailUser','type_user_id');
+    }
 }

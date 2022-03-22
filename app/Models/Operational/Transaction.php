@@ -34,4 +34,9 @@ class Transaction extends Model
          'updated_at',
          'deleted_at',
      ];
+
+     public function appointment()
+     {
+         return $this->belongsTo('App\Models\ManagementAcess\Appointment','appointment_id','id');
+     }
 }

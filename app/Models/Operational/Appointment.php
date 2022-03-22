@@ -34,4 +34,28 @@ class Appointment extends Model
          'updated_at',
          'deleted_at',
      ];
+
+    //Menerima Relasi Dari tabel doctor
+    public function doctor()
+    {
+        return $this->belongsTo('App\Models\ManagementAcess\Appointment','doctor_id','id');
+    }
+
+    //Menerima Relasi Dari tabel consultation
+    public function consultation()
+    {
+        return $this->belongsTo('App\Models\MasterData\Consultation', 'consultation_id', 'id');
+    }
+
+    //Menerima Relasi Dari tabel user
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User','user_id','id');
+    }
+
+    //Mengirim Relasi Ke Tabel Transaction (One To One)
+    public function transaction()
+    {
+        return $this->hasOne('App\Models\Operational\Transaction','appointment_id');
+    }
 }

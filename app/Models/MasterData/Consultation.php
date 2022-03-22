@@ -25,4 +25,10 @@ class Consultation extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    //Mengirimkan Relasi Ke Tabel Appointment (One To Many)
+    public function appointment()
+    {
+        return $this->hasMany('App\Model\Operational\Appointment', 'consultation_id');
+    }
 }

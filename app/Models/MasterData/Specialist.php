@@ -29,4 +29,11 @@ class Specialist extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    //Mengirimkan Relasi Ke Tabel Doctor (One To Many)
+    public function doctor()
+    {
+        
+        return $this->hasMany('App\Models\ManagementAcess\Doctor','specialist_id');
+    }
 }
