@@ -29,4 +29,16 @@ class PermissionRole extends Model
              'updated_at',
              'deleted_at'
          ];
+
+    //Menerima Relasi Dari tabel permission
+    public function permission()
+    {
+        return $this->belongsTo('App\Models\ManagementAccess\Permission','permission_id','id');
+    }
+
+    //Menerima Relasi Dari tabel user
+    public function role()
+    {
+        return $this->belongsTo('App\Models\ManagementAccess\Role','role_id','id');
+    }
 }
