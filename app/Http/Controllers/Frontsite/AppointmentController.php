@@ -3,10 +3,29 @@
 namespace App\Http\Controllers\Frontsite;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+
+//Use Library
+use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Storage;
+
+//User everything
+//Use Gate
+use Auth;
+
+//Model Here
+use App\Models\User;
+use App\Models\Operational\Doctor;
+use App\Models\MasterData\Consultation;
+
+//Third Party Package
 
 class AppointmentController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +33,7 @@ class AppointmentController extends Controller
      */
     public function index()
     {
-        //
+        return view('pages.frontsite.index');
     }
 
     /**
@@ -24,7 +43,7 @@ class AppointmentController extends Controller
      */
     public function create()
     {
-        //
+        abort(404);
     }
 
     /**
@@ -35,7 +54,7 @@ class AppointmentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -46,7 +65,7 @@ class AppointmentController extends Controller
      */
     public function show($id)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -57,7 +76,7 @@ class AppointmentController extends Controller
      */
     public function edit($id)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -69,7 +88,7 @@ class AppointmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        abort(404);
     }
 
     /**
@@ -80,6 +99,6 @@ class AppointmentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        abort(404);
     }
 }
