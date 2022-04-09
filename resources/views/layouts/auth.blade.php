@@ -10,7 +10,6 @@
     </head>
     <body>
         @yield('content')
-        @include('components.frontsite.footer')
 
         @stack('before-script')
             @include('includes.frontsite.script')

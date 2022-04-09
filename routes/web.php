@@ -3,8 +3,12 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\Frontsite\LandingController;
-use App\Http\Controllers\Frontsite\AppointmentController;
 use App\Http\Controllers\Frontsite\PaymentController;
+use App\Http\Controllers\Frontsite\AppointmentController;
+
+//Backsite
+use App\Http\Controllers\Backsite\DashboardController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,6 +24,7 @@ use App\Http\Controllers\Frontsite\PaymentController;
 Route::resource('/', LandingController::class);
 
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
+
     // return view('dashboard');
 
     //Payment Page
@@ -32,6 +37,12 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 //     return view('welcome');
 // });
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+// Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+//     return view('dashboard');
+// })->name('dashboard');
+
+Route::group(['prefix' => 'backsite', 'as' => 'backsite.', 'middleware' => ['auth:sanctum', 'verified']],
+function () {
+    Route::resource('dashboard', DashboardController::class);
+
+});
