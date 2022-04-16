@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 //Backsite
 use App\Http\Controllers\Backsite\RoleController;
 use App\Http\Controllers\Backsite\UserController;
-use App\Http\Controllers\Backsite\UserTypeController;
+use App\Http\Controllers\Backsite\TypeUserController;
 use App\Http\Controllers\Backsite\DashboardController;
 use App\Http\Controllers\Backsite\PermissionController;
 use App\Http\Controllers\Backsite\SpecialistController;
@@ -13,6 +13,8 @@ use App\Http\Controllers\Backsite\ConsultationController;
 use App\Http\Controllers\Backsite\AppointmentBacksiteController;
 use App\Http\Controllers\Backsite\ConfigPaymentController;
 use App\Http\Controllers\Backsite\ReportController;
+use App\Http\Controllers\Backsite\DoctorController;
+use App\Http\Controllers\Backsite\TransactionController;
 
 
 //Frontsite
@@ -75,7 +77,7 @@ function () {
         Route::resource('user', UserController::class);
 
         //User Type Page
-        Route::resource('user-type', UserTypeController::class);
+        Route::resource('type_user', TypeUserController::class);
 
     //End Management Access Route
 

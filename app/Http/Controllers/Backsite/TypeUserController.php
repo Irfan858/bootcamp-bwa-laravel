@@ -5,8 +5,13 @@ namespace App\Http\Controllers\Backsite;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class UserTypeController extends Controller
+class TypeUserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,9 @@ class UserTypeController extends Controller
      */
     public function index()
     {
-        return view('pages.backsite.management-access.user-type.index');
+        $type_user = TypeUser::all();
+
+        return view('pages.backsite.management-access.type-user.index', compact('type_user'));
     }
 
     /**

@@ -9,17 +9,18 @@ use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
 //Request
-use App\Http\Requests\Specialist\StoreSpecialistRequest;
-use App\Http\Requests\Specialist\UpdateSpecialistRequest;
+use App\Http\Requests\Doctor\StoreDoctorRequest;
+use App\Http\Requests\Doctor\UpdateDoctorRequest;
 
 //Use Everything Here
 //Use Gate
 use Auth;
 
 //Use Model Here
+use App\Model\MasterData\Doctor;
 use App\Model\MasterData\Specialist;
 
-class SpecialistController extends Controller
+class DoctorController extends Controller
 {
     public function __construct()
     {
@@ -33,11 +34,14 @@ class SpecialistController extends Controller
      */
     public function index()
     {
+        //For Table Grid
+        $doctor = Doctor::orderBy('created_at', 'desc')->get();
 
-        //Use Data From Specialist Table
-        $specialist = Specialist::orderBy('created_at', 'desc')->get();
+        //For Select to (Use Ascending Order)
+        $specialist = Specialist::orderBy('name', 'asc')->get();
 
-        return view('pages.backsite.master-data.specialist.index', compact('specialist'));
+
+        return view('pages.backsite.operational.doctor.index', compact('doctor','specialist'));
     }
 
     /**
@@ -56,17 +60,16 @@ class SpecialistController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSpecialistRequest $request)
+    public function store(StoreDoctorRequest $request)
     {
-        //get all data from frontsite
+          //get all data from frontsite
         $data = $request->all();
 
         //store to database
-        $specialist = Specialist::create($data);
+        $doctor = Doctor::create($data);
 
-        alert()->success('Success Message', 'Successfully Added New Specialist');
-        return redirect()->route('backsite.specialist.index');
-
+        alert()->success('Success Message', 'Successfully Added New Doctor');
+        return redirect()->route('backsite.doctor.index');
     }
 
     /**
@@ -75,9 +78,9 @@ class SpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Specialist $specialist)
+    public function show(Doctor $doctor)
     {
-        return view('pages.backsite.master-data.specialist.show', compact('specialist'));
+        return view('pages.backsite.operational.doctor.show', compact('doctor'));
     }
 
     /**
@@ -86,9 +89,12 @@ class SpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Specialist $specialist)
+    public function edit(Doctor $doctor)
     {
-        return view('pages.backsite.master-data.specialist.edit', compact('specialist'));
+          //For Select to (Use Ascending Order)
+          $specialist = Specialist::orderBy('name', 'asc')->get();
+
+          return view('pages.backsite.operational.doctor.edit', compact('doctor', 'specialist'));
     }
 
     /**
@@ -98,16 +104,16 @@ class SpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSpecialistRequest $request, Specialist $specialist)
+    public function update(UpdateDoctorRequest $request, Doctor $doctor)
     {
          //get all data from frontsite
          $data = $request->all();
 
          //update to database
-         $specialist->update($data);
+         $doctor->update($data);
 
          alert()->success('Success Message', 'Successfully Added New Specialist');
-         return redirect()->route('backsite.specialist.index');
+         return redirect()->route('backsite.doctor.index');
     }
 
     /**
@@ -116,11 +122,11 @@ class SpecialistController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Specialist $specialist)
+    public function destroy(Doctor $doctor)
     {
-        $specialist->delete();
+        $doctor->delete();
 
-        alert()->success('Success Message', 'Successfully deleted specialist');
+        alert()->success('Success Message', 'Successfully deleted Doctor');
 
         return back();
     }
