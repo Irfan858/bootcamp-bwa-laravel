@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Backsite;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class AppointmentController extends Controller
+class AppointmentBacksiteController extends Controller
 {
     public function __construct()
     {
@@ -87,4 +87,5 @@ class AppointmentController extends Controller
     {
         return abort(404);
     }
+
 }
