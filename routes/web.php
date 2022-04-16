@@ -50,11 +50,11 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 // Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 //     return view('dashboard');
 // })->name('dashboard');
-Route::get('/register-success', function () {
+Route::get('register-success', function () {
     return view('pages.frontsite.success.signup-success');
 });
 
-Route::get('/payment-success', function () {
+Route::get('payment-success', function () {
     return view('pages.frontsite.success.payment-success');
 });
 
