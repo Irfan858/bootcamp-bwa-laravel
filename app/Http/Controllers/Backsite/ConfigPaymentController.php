@@ -2,8 +2,19 @@
 
 namespace App\Http\Controllers\Backsite;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+//Use library
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
+
+//Request
+use App\Http\Requests\ConfigPayment\UpdateConfigPaymentRequest;
+
+//Use Everything Here
+//Use Gate
+use Auth;
+
+//Use Model Here
+use App\Model\MasterData\ConfgiPayment;
 
 class ConfigPaymentController extends Controller
 {
@@ -19,7 +30,10 @@ class ConfigPaymentController extends Controller
      */
     public function index()
     {
-        return view('pages.backsite.master-data.config-payment.index');
+        //Use Data From Specialist Table
+        $config_payment = ConfigPayment::orderBy('created_at', 'desc')->get();
+
+        return view('pages.backsite.master-data.config-payment.index', compact('config_payment'));
     }
 
     /**
@@ -49,9 +63,9 @@ class ConfigPaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(ConfigPayment $config_payment)
     {
-        return abort(404);
+        return view('pages.backsite.master-data.config-payment.show', compact('config_payment'));
     }
 
     /**
@@ -60,9 +74,12 @@ class ConfigPaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(ConfigPayment $config_payment)
     {
-        return abort(404);
+         //Use Data From Specialist Table
+         $config_payment = ConfigPayment::orderBy('created_at', 'desc')->get();
+
+         return view('pages.backsite.master-data.config-payment.edit', compact('config_payment'));
     }
 
     /**

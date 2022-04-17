@@ -2,11 +2,30 @@
 
 namespace App\Http\Controllers\Backsite;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+//Use library
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
+
+//Request
+use App\Http\Requests\Consultation\StoreConsultationRequest;
+use App\Http\Requests\Consultation\UpdateConsultationRequest;
+
+//Use Everything Here
+//Use Gate
+use Auth;
+
+//Use Model Here
+use App\Model\MasterData\Consutation;
+use App\Model\Operational\Appointment;
+
 
 class ConsultationController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +33,13 @@ class ConsultationController extends Controller
      */
     public function index()
     {
-        return view('pages.backsite.master-data.consultation.index');
+        //For Table Grid
+        $consultation = Consultation::orderBy('created_at', 'desc')->get();
+
+        //For Select to (Use Descending Order)
+        $appointment = Appointment::orderBy('created_at','desc')->get();
+
+        return view('pages.backsite.master-data.consultation.index', compact('consultation','appointment'));
     }
 
     /**
@@ -33,9 +58,16 @@ class ConsultationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Consultation $consultation)
     {
-        return abort(404);
+        //get all data from frontsite
+        $data = $request->all();
+
+        //store to database
+        $consultation = Consultation::create($data);
+
+        alert()->success('Success Message', 'Successfully Added New Consultation');
+        return redirect()->route('backsite.consultation.index');
     }
 
     /**
@@ -44,9 +76,9 @@ class ConsultationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Consultation $consultation)
     {
-        return abort(404);
+        return view('pages.backsite.master-data.consultation.show', compact('consultation'));
     }
 
     /**
@@ -55,9 +87,12 @@ class ConsultationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Consultation $consultation)
     {
-        return abort(404);
+        //For Select to (Use Descending Order)
+        $appointment = Appointment::orderBy('created_at','desc')->get();
+
+        return view('pages.backsite.master-data.consultation.show', compact('consultation', 'appointment'));
     }
 
     /**
@@ -67,9 +102,16 @@ class ConsultationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateConsultationRequest $request, Consultation $consultation)
     {
-        return abort(404);
+         //get all data from frontsite
+         $data = $request->all();
+
+         //update to database
+         $consultation->update($data);
+
+         alert()->success('Success Message', 'Successfully Updated Consultation');
+         return redirect()->route('backsite.consultation.index');
     }
 
     /**
@@ -78,8 +120,12 @@ class ConsultationController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Consultation $consultation)
     {
-        return abort(404);
+        $consultation->forceDelete();
+
+        alert()->success('Success Message', 'Successfully deleted Consultation');
+
+        return back();
     }
 }

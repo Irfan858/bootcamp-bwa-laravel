@@ -3,7 +3,19 @@
 namespace App\Http\Controllers\Backsite;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+
+//Use library
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
+
+//Use Everything Here
+//Use Gate
+use Auth;
+
+//Use Model Here
+use App\Model\Operational\Appointment;
+use App\Model\Operational\Doctor;
+use App\Model\MasterData\Specialist;
 
 class AppointmentBacksiteController extends Controller
 {
@@ -19,7 +31,14 @@ class AppointmentBacksiteController extends Controller
      */
     public function index()
     {
-        return view('pages.backsite.operational.appointment.index');
+        //For Table Grid
+        $appointment = Appointment::orderBy('created_at'. 'desc')->get();
+
+        //For Select To
+        $doctor = Doctor::orderBy('name', 'asc')->get();
+        $specialist = Specialist::orderBy('name', 'asc')->get();
+
+        return view('pages.backsite.operational.appointment.index', compact('appointment', 'specialist', 'doctor'));
     }
 
     /**
@@ -49,9 +68,9 @@ class AppointmentBacksiteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Appointment $appointment)
     {
-        return abort(404);
+        return view('pages.backsite.operational.appointment.index', compact('appointment'));
     }
 
     /**

@@ -3,10 +3,29 @@
 namespace App\Http\Controllers\Backsite;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+
+//Use library
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
+
+//Request
+use App\Http\Requests\Role\StoreRoleRequest;
+use App\Http\Requests\Role\UpdateRoleRequest;
+
+//Use Everything Here
+//Use Gate
+use Auth;
+
+//Use Model Here
+use App\Model\ManagementAcess\Role;
 
 class RoleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +33,10 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return view('pages.baciste.management-access.role.index');
+        //Take Data From Role Table
+        $role = Role::orderBy('name', 'asc')->get();
+
+        return view('pages.baciste.management-access.role.index', compact('role'));
     }
 
     /**
@@ -33,9 +55,16 @@ class RoleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreRoleRequest $request)
     {
-        return abort(404);
+       //get all data from frontsite
+       $data = $request->all();
+
+       //store to database
+       $role = Role::create($data);
+
+       alert()->success('Success Message', 'Successfully Added New Role');
+       return redirect()->route('backsite.role.index');
     }
 
     /**
@@ -44,9 +73,9 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Role $role)
     {
-        return abort(404);
+        return view('pages.baciste.management-access.role.show', compact('role'));
     }
 
     /**
@@ -55,9 +84,9 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Role $role)
     {
-        return abort(404);
+        return view('pages.baciste.management-access.role.edit', compact('role'));
     }
 
     /**
@@ -67,9 +96,16 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
-        return abort(404);
+        //get all data from frontsite
+        $data = $request->all();
+
+        //update to database
+        $role->update($data);
+
+        alert()->success('Success Message', 'Successfully Updated Specialist');
+        return redirect()->route('backsite.role.index');
     }
 
     /**
@@ -78,8 +114,12 @@ class RoleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Role $role)
     {
-        return abort(404);
+        $role->forceDelete();
+
+        alert()->success('Success Message', 'Successfully Deleted Role');
+
+        return back();
     }
 }

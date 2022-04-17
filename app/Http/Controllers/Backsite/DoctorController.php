@@ -41,7 +41,7 @@ class DoctorController extends Controller
         $specialist = Specialist::orderBy('name', 'asc')->get();
 
 
-        return view('pages.backsite.operational.doctor.index', compact('doctor','specialist'));
+        return view ('pages.backsite.operational.doctor.index', compact('doctor','specialist'));
     }
 
     /**
@@ -62,7 +62,7 @@ class DoctorController extends Controller
      */
     public function store(StoreDoctorRequest $request)
     {
-          //get all data from frontsite
+        //get all data from frontsite
         $data = $request->all();
 
         //store to database
@@ -124,7 +124,7 @@ class DoctorController extends Controller
      */
     public function destroy(Doctor $doctor)
     {
-        $doctor->delete();
+        $doctor->forceDelete();
 
         alert()->success('Success Message', 'Successfully deleted Doctor');
 

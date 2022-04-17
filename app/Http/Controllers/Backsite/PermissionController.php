@@ -2,8 +2,18 @@
 
 namespace App\Http\Controllers\Backsite;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+//Use library
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
+
+
+//Use Everything Here
+//Use Gate
+use Auth;
+
+//Use Model Here
+use App\Model\ManagementAcess\Permission;
+
 
 class PermissionController extends Controller
 {
@@ -14,7 +24,9 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        return view('pages.backsite.management-access.permission.index');
+        $permission = Permission::orderBy('title', 'asc')->get();
+
+        return view('pages.backsite.management-access.permission.index', compact('permission'));
     }
 
     /**

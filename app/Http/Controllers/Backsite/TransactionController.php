@@ -3,10 +3,26 @@
 namespace App\Http\Controllers\Backsite;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+
+//Use library
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
+
+//Use Everything Here
+//Use Gate
+use Auth;
+
+//Use Model Here
+use App\Model\Operational\Transaction;
+use App\Model\Operational\Appointment;
 
 class TransactionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +30,13 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        return view('pages.backsite.operational.transaction.index');
+         //For Table Grid
+         $transaction = Transaction::orderBy('created_at'. 'desc')->get();
+
+         //For Select To
+         $appointment = Appointment::orderBy('created_at'. 'desc')->get();
+
+        return view('pages.backsite.operational.transaction.index', compact('transaction', 'specialist'));
     }
 
     /**
@@ -44,9 +66,9 @@ class TransactionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Transaction $transaction)
     {
-        return abort(404);
+        return view('pages.backsite.operational.transaction.index', compact('transaction'));
     }
 
     /**
