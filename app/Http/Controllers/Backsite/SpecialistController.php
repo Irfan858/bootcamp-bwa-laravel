@@ -13,7 +13,7 @@ use App\Http\Requests\Specialist\StoreSpecialistRequest;
 use App\Http\Requests\Specialist\UpdateSpecialistRequest;
 
 //Use Everything Here
-//Use Gate
+use Gate;
 use Auth;
 
 //Use Model Here
@@ -33,6 +33,8 @@ class SpecialistController extends Controller
      */
     public function index()
     {
+        //use Gate
+        abort_if(Gate::denies('specialist_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         //Use Data From Specialist Table
         $specialist = Specialist::orderBy('created_at', 'desc')->get();
@@ -61,6 +63,10 @@ class SpecialistController extends Controller
         //get all data from frontsite
         $data = $request->all();
 
+         // re format before push to table
+         $data['price'] = str_replace(',', '', $data['price']);
+         $data['price'] = str_replace('IDR ', '', $data['price']);
+
         //store to database
         $specialist = Specialist::create($data);
 
@@ -77,6 +83,9 @@ class SpecialistController extends Controller
      */
     public function show(Specialist $specialist)
     {
+        //use Gate
+        abort_if(Gate::denies('specialist_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         return view('pages.backsite.master-data.specialist.show', compact('specialist'));
     }
 
@@ -88,6 +97,9 @@ class SpecialistController extends Controller
      */
     public function edit(Specialist $specialist)
     {
+        //use Gate
+        abort_if(Gate::denies('specialist_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         return view('pages.backsite.master-data.specialist.edit', compact('specialist'));
     }
 
@@ -100,11 +112,14 @@ class SpecialistController extends Controller
      */
     public function update(UpdateSpecialistRequest $request, Specialist $specialist)
     {
-         //get all data from frontsite
-         $data = $request->all();
+         // get all request from frontsite
+       $data = $request($data);
 
-         //update to database
-         $specialist->update($data);
+       $data['price'] = str_replace(',', '', $data['price']);
+       $data['price'] = str_replace('IDR ', '', $data['price']);
+
+       //update to database
+       $specialist->update($data);
 
          alert()->success('Success Message', 'Successfully Added New Specialist');
          return redirect()->route('backsite.specialist.index');
@@ -118,6 +133,9 @@ class SpecialistController extends Controller
      */
     public function destroy(Specialist $specialist)
     {
+        //use Gate
+        abort_if(Gate::denies('specialist_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $specialist->delete();
 
         alert()->success('Success Message', 'Successfully deleted specialist');

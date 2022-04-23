@@ -8,22 +8,30 @@ use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
 //Request
-use App\Http\Requests\ConfigPayment\UpdateConfigPaymentRequest;
 
 //Use Everything Here
-//Use Gate
+Use Gate;
 use Auth;
 
 //Use Model Here
-use App\Model\MasterData\ConfgiPayment;
+use App\Models\User;
 
-class ConfigPaymentController extends Controller
+//Operational
+use App\Models\Operational\Appointment;
+use App\Models\Operational\Transaction;
+use App\Models\Operational\Doctor;
+
+//Master Data
+use App\Model\MasterData\Specialist;
+use App\Model\MasterData\Consultation;
+use App\Model\MasterData\ConfigPayment;
+
+class HospitalPatientController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
     }
-
     /**
      * Display a listing of the resource.
      *
@@ -31,10 +39,15 @@ class ConfigPaymentController extends Controller
      */
     public function index()
     {
-        //Use Data From Specialist Table
-        $config_payment = ConfigPayment::all();
+        //use Gate
+        abort_if(Gate::denies('hospital_patient_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return view('pages.backsite.master-data.config-payment.index', compact('config_payment'));
+        // For Table Grid
+        $hospital_patient = User::whereHas('detail_user', function(Builder $query){
+            $query->where('type_user_id', 3); // Only Load Patient Or id 3 In Type User Table
+        })->orderBy('created_at', 'desc')->get();
+
+        return view('pages.backsite.operational.doctor.index', compact('hospital_patient'));
     }
 
     /**
@@ -66,7 +79,7 @@ class ConfigPaymentController extends Controller
      */
     public function show($id)
     {
-       return abort(404);
+        return abort(404);
     }
 
     /**
@@ -75,9 +88,9 @@ class ConfigPaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(ConfigPayment $config_payment)
+    public function edit($id)
     {
-         return view('pages.backsite.master-data.config-payment.edit', compact('config_payment'));
+        return abort(404);
     }
 
     /**
@@ -87,16 +100,9 @@ class ConfigPaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateConfigPaymentRequest $request, ConfigPayment $config_payment)
+    public function update(Request $request, $id)
     {
-        //Get All Request From Frontsite
-        $data = $request->all();
-
-        //Update To Database
-        $config_payment->update($data);
-
-        alert()->success('Success Message', 'Successfully updated config payment');
-        return redirect()->route('backsite.config_payment.index');
+        return abort(404);
     }
 
     /**

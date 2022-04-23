@@ -5,22 +5,21 @@ use Illuminate\Support\Facades\Route;
 //Backsite
 use App\Http\Controllers\Backsite\RoleController;
 use App\Http\Controllers\Backsite\UserController;
+use App\Http\Controllers\Backsite\DoctorController;
 use App\Http\Controllers\Backsite\TypeUserController;
 use App\Http\Controllers\Backsite\DashboardController;
 use App\Http\Controllers\Backsite\PermissionController;
 use App\Http\Controllers\Backsite\SpecialistController;
+use App\Http\Controllers\Backsite\ReportTransactionController;
+use App\Http\Controllers\Backsite\ReportAppointmentController;
 use App\Http\Controllers\Backsite\ConsultationController;
-use App\Http\Controllers\Backsite\AppointmentBacksiteController;
-use App\Http\Controllers\Backsite\ConfigPaymentController;
-use App\Http\Controllers\Backsite\ReportController;
-use App\Http\Controllers\Backsite\DoctorController;
-use App\Http\Controllers\Backsite\TransactionController;
 
 
 //Frontsite
 use App\Http\Controllers\Frontsite\LandingController;
 use App\Http\Controllers\Frontsite\PaymentController;
 use App\Http\Controllers\Frontsite\AppointmentController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -44,6 +43,8 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 
     //Appointment Page
     Route::resource('appointment', AppointmentController::class);
+
+
 });
 // Route::get('/', function () {
 //     return view('welcome');
@@ -52,6 +53,7 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
 // Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 //     return view('dashboard');
 // })->name('dashboard');
+
 Route::get('register-success', function () {
     return view('pages.frontsite.success.signup-success');
 });
@@ -98,14 +100,14 @@ function () {
         //Doctor Page
         Route::resource('doctor', DoctorController::class);
 
+        //Hospital Patient
+        Route::resource('hospital_patient', HospitalPatientController::class);
+
         //Appointment Page
-        Route::resource('appointment', AppointmentBacksiteController::class);
+        Route::resource('appointment', ReportAppointmentController::class);
 
         //Transaction Page
-        Route::resource('transaction', TransactionController::class);
-
-        //Report Page
-        Route::resource('report', ReportController::class);
+        Route::resource('transaction', ReportTransactionController::class);
 
     // End Operational Route
 });

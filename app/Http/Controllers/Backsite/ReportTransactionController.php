@@ -3,10 +3,37 @@
 namespace App\Http\Controllers\Backsite;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
-class ReportController extends Controller
+//Use library
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\HttpFoundation\Response;
+
+//Request
+
+//Use Everything Here
+use Gate;
+use Auth;
+
+//Use Model Here
+use App\Models\User;
+
+//Operational
+use App\Models\Operational\Appointment;
+use App\Models\Operational\Transaction;
+use App\Models\Operational\Doctor;
+
+//Master Data
+use App\Model\MasterData\Specialist;
+use App\Model\MasterData\Consultation;
+use App\Model\MasterData\ConfigPayment;
+
+
+class ReportTransactionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +41,13 @@ class ReportController extends Controller
      */
     public function index()
     {
-        return view('pages.backsite.operational.report.index');
+        //use Gate
+        abort_if(Gate::denies('transaction_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        // You must add validation with condition session id user by type user, doctor and patient
+        $transaction = Transaction::orderBy('created_at', 'desc')->get();
+
+        return view('pages.backsite.operational.transaction.index', compact('transaction'));
     }
 
     /**

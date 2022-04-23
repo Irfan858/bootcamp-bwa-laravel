@@ -13,7 +13,7 @@ use App\Http\Requests\Role\StoreRoleRequest;
 use App\Http\Requests\Role\UpdateRoleRequest;
 
 //Use Everything Here
-//Use Gate
+use Gate;
 use Auth;
 
 //Use Model Here
@@ -33,6 +33,9 @@ class RoleController extends Controller
      */
     public function index()
     {
+        //use Gate
+        abort_if(Gate::denies('role_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         //Take Data From Role Table
         $role = Role::orderBy('name', 'asc')->get();
 
@@ -75,6 +78,11 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
+        //use Gate
+        abort_if(Gate::denies('role_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $role->load('permission');
+
         return view('pages.baciste.management-access.role.show', compact('role'));
     }
 
@@ -86,6 +94,13 @@ class RoleController extends Controller
      */
     public function edit(Role $role)
     {
+        //use Gate
+        abort_if(Gate::denies('role_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $permission = Permission::all();
+
+        $role->load('permission');
+
         return view('pages.baciste.management-access.role.edit', compact('role'));
     }
 
@@ -99,10 +114,10 @@ class RoleController extends Controller
     public function update(UpdateRoleRequest $request, Role $role)
     {
         //get all data from frontsite
-        $data = $request->all();
+        $data->update($request->all());
 
         //update to database
-        $role->update($data);
+        $role->permisson()->sync($request->input('permisson', []));
 
         alert()->success('Success Message', 'Successfully Updated Specialist');
         return redirect()->route('backsite.role.index');
@@ -116,6 +131,9 @@ class RoleController extends Controller
      */
     public function destroy(Role $role)
     {
+        //use Gate
+        abort_if(Gate::denies('role_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $role->forceDelete();
 
         alert()->success('Success Message', 'Successfully Deleted Role');

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Backsite;
+use App\Http\Controllers\Controller;
 
 //Use library
 use Illuminate\Support\Facades\Storage;
@@ -11,12 +12,11 @@ use App\Http\Requests\Consultation\StoreConsultationRequest;
 use App\Http\Requests\Consultation\UpdateConsultationRequest;
 
 //Use Everything Here
-//Use Gate
+Use Gate;
 use Auth;
 
 //Use Model Here
 use App\Model\MasterData\Consutation;
-use App\Model\Operational\Appointment;
 
 
 class ConsultationController extends Controller
@@ -33,13 +33,13 @@ class ConsultationController extends Controller
      */
     public function index()
     {
+        //Use Gate
+        abort_if(Gate::denies('consultation_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         //For Table Grid
         $consultation = Consultation::orderBy('created_at', 'desc')->get();
 
-        //For Select to (Use Descending Order)
-        $appointment = Appointment::orderBy('created_at','desc')->get();
-
-        return view('pages.backsite.master-data.consultation.index', compact('consultation','appointment'));
+        return view('pages.backsite.master-data.consultation.index', compact('consultation'));
     }
 
     /**
@@ -78,6 +78,9 @@ class ConsultationController extends Controller
      */
     public function show(Consultation $consultation)
     {
+        //use Gate
+        abort_if(Gate::denies('consultation_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         return view('pages.backsite.master-data.consultation.show', compact('consultation'));
     }
 
@@ -89,10 +92,10 @@ class ConsultationController extends Controller
      */
     public function edit(Consultation $consultation)
     {
-        //For Select to (Use Descending Order)
-        $appointment = Appointment::orderBy('created_at','desc')->get();
+        //use Gate
+        abort_if(Gate::denies('consultation_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return view('pages.backsite.master-data.consultation.show', compact('consultation', 'appointment'));
+        return view('pages.backsite.master-data.consultation.show', compact('consultation'));
     }
 
     /**
@@ -122,6 +125,9 @@ class ConsultationController extends Controller
      */
     public function destroy(Consultation $consultation)
     {
+        //use Gate
+        abort_if(Gate::denies('consultation_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $consultation->forceDelete();
 
         alert()->success('Success Message', 'Successfully deleted Consultation');
