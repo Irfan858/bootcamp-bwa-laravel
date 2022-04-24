@@ -34,15 +34,16 @@ class DetailUser extends Model
         'deleted_at'
     ];
 
-        //Menerima Relasi Dari Tabel type_user
-        public function type_user()
-        {
+         // one to many
+    public function type_user()
+    {
+        // 3 parameter (path model, field foreign key, field primary key from table hasMany/hasOne)
         return $this->belongsTo('App\Models\MasterData\TypeUser', 'type_user_id', 'id');
-        }
+    }
 
-        //Menerima Relasi Dari tabel user
-        public function user()
-        {
-            return $this->belongsTo('App\Models\User','user_id','id');
-        }
+    public function user()
+    {
+        // 3 parameter (path model, field foreign key, field primary key from table hasMany/hasOne)
+        return $this->belongsTo('App\Models\User', 'user_id', 'id');
+    }
 }

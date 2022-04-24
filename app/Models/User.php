@@ -61,21 +61,30 @@ class User extends Authenticatable
         'profile_photo_url',
     ];
 
-    //Mengirimkan Relasi Ke Tabel Appointment (One To Many)
-    public function appointment()
-    {
-        return $this->hasMany('App\Models\Operational\Appointment', 'user_id');
-    }
 
-    //Mengirimkan Relasi Ke Tabel detail_user (One To One)
-    public function detail_user()
-    {
-        return $this->hasOne('App\Models\ManagementAcess\DetailUser', 'user_id');
-    }
+     // many to many --- //
+     public function role()
+     {
+         return $this->belongsToMany('App\Models\ManagementAccess\Role');
+     }
 
-    //Mengirimkan Relasi Ke Tabel role_user
-    public function role_user()
-    {
-        return $this->hasMany('App\Models\ManagementAcess\RoleUser', 'user_id');
-    }
+     // one to many
+     public function appointment()
+     {
+         // 2 parameter (path model, field foreign key)
+         return $this->hasMany('App\Models\Operational\Appointment', 'user_id');
+     }
+
+     public function detail_user()
+     {
+         // 2 parameter (path model, field foreign key)
+         return $this->hasOne('App\Models\ManagementAccess\DetailUser', 'user_id');
+     }
+
+     public function role_user()
+     {
+         // 2 parameter (path model, field foreign key)
+         return $this->hasMany('App\Models\ManagementAccess\RoleUser', 'user_id');
+     }
+
 }

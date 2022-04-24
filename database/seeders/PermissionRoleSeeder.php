@@ -5,6 +5,9 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
+use App\Models\ManagementAcess\Role;
+use App\Models\ManagementAcess\Permission;
+
 class PermissionRoleSeeder extends Seeder
 {
     /**

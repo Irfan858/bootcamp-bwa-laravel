@@ -13,14 +13,14 @@ class PermissionRole extends Model
 
          //Declare Table
          public $table = 'permission_role';
- 
+
          //This Field must type date yyyy-mm-dd hh:mm:ss
          protected $dates = [
              'created_at',
              'updated_at',
              'deleted_at'
          ];
-    
+
          //Declare Fillable
          protected $fillable = [
              'permission_id',
@@ -30,15 +30,16 @@ class PermissionRole extends Model
              'deleted_at'
          ];
 
-    //Menerima Relasi Dari tabel permission
+    // one to many
     public function permission()
     {
-        return $this->belongsTo('App\Models\ManagementAccess\Permission','permission_id','id');
+        // 3 parameter (path model, field foreign key, field primary key from table hasMany/hasOne)
+        return $this->belongsTo('App\Models\ManagementAccess\Permission', 'permission_id', 'id');
     }
 
-    //Menerima Relasi Dari tabel user
     public function role()
     {
-        return $this->belongsTo('App\Models\ManagementAccess\Role','role_id','id');
+        // 3 parameter (path model, field foreign key, field primary key from table hasMany/hasOne)
+        return $this->belongsTo('App\Models\ManagementAccess\Role', 'role_id', 'id');
     }
 }
