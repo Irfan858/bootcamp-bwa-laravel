@@ -6,7 +6,6 @@ use App\Models\MasterData\Consultation;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class ConsultationSeeder extends Seeder
 {
@@ -17,26 +16,26 @@ class ConsultationSeeder extends Seeder
      */
     public function run()
     {
-         //Creata Data
-         $consultation = [
+        // create data here
+        $consultation = [
             [
-                "name" => 'Jantung Sesak',
-                "created_at" => Carbon::now(),
-                "updated_at" => Carbon::now()
+                'name' => 'Jantung Sesak',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
-                "name" => 'Tekanan Darah Tinggi',
-                "created_at" => Carbon::now(),
-                "updated_at" => Carbon::now()
+                'name' => 'Tekanan Darah Tinggi',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
-                "name" => 'Gangguan Irama Jantung',
-                "created_at" => Carbon::now(),
-                "updated_at" => Carbon::now()
+                'name' => 'Gangguan Irama Jantung',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
         ];
 
-        //Running Insert To Table From Array
+        // this array $consultation will be insert to table 'consultation'
         Consultation::insert($consultation);
     }
 }

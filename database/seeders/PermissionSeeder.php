@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\ManagementAccess\Permission;
+
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Models\ManagementAcess\Permission;
 
 class PermissionSeeder extends Seeder
 {

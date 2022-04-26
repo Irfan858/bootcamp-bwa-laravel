@@ -67,8 +67,8 @@
                         {{-- @endcan --}}
 
                         {{-- @can('config_payment_access') --}}
-                            <li class="{{ request()->is('backsite/config_payment') || request()->is('backsite/config_payment/*') || request()->is('backsite/*/config_payment') || request()->is('backsite/*/config_payment/*') ? 'active' : '' }} ">
-                                <a class="menu-item" href="{{ route('backsite.config_payment.index') }}">
+                            <li class="{{ request()->is('backsite/config-payment') || request()->is('backsite/config-payment/*') || request()->is('backsite/*/config_payment') || request()->is('backsite/*/config_payment/*') ? 'active' : '' }} ">
+                                <a class="menu-item" href="{{ route('backsite.config-payment.index') }}">
                                     <i></i><span>Config Payment</span>
                                 </a>
                             </li>

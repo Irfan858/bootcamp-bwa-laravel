@@ -6,7 +6,6 @@ use App\Models\MasterData\ConfigPayment;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class ConfigPaymentSeeder extends Seeder
 {
@@ -17,17 +16,17 @@ class ConfigPaymentSeeder extends Seeder
      */
     public function run()
     {
-        //Creata Data
+        // create data here
         $config_payment = [
             [
-                "fee" => '150000',
-                "vat" => '20',
-                "created_at" => Carbon::now(),
-                "updated_at" => Carbon::now()
+                'fee' => '150000',
+                'vat' => '20', // vat is percentage
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
         ];
-        
-        //Running Insert To Table From Array
+
+        // this array $config_payment will be insert to table 'config_payment'
         ConfigPayment::insert($config_payment);
     }
 }

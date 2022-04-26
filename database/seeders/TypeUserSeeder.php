@@ -6,8 +6,6 @@ use App\Models\MasterData\TypeUser;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
-
 
 class TypeUserSeeder extends Seeder
 {
@@ -18,25 +16,26 @@ class TypeUserSeeder extends Seeder
      */
     public function run()
     {
+        // create data here
         $type_user = [
             [
                 'name' => 'Admin',
-                "created_at" => Carbon::now(),
-                "updated_at" => Carbon::now()
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
                 'name' => 'Dokter',
-                "created_at" => Carbon::now(),
-                "updated_at" => Carbon::now()
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
             [
                 'name' => 'Pasien',
-                "created_at" => Carbon::now(),
-                "updated_at" => Carbon::now()
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ],
         ];
 
-        //Running Insert To Table From Array
+        // this array $type_user will be insert to table 'type_user'
         TypeUser::insert($type_user);
     }
 }

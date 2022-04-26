@@ -8,7 +8,6 @@ use App\Models\ManagementAccess\RoleUser;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-
 class RoleUserSeeder extends Seeder
 {
     /**

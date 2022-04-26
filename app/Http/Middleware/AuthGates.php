@@ -47,11 +47,11 @@ class AuthGates
             }
 
             //Checking User Role
-            foreach ($permissonArray as $title => $roles)
+            foreach ($permissonsArray as $title => $roles)
             {
                 Gate::define($title, function(\App\Models\User $user)
                 use ($roles){
-                    return count(array_intersect($user->role->pluck(id)->toArray(), $roles)) > 0;
+                    return count(array_intersect($user->role->pluck('id')->toArray(), $roles)) > 0;
                 });
             }
         }
