@@ -13,7 +13,7 @@ use Gate;
 use Auth;
 
 //Use Model Here
-use App\Model\ManagementAcess\Permission;
+use App\Models\ManagementAccess\Permission;
 
 
 class PermissionController extends Controller

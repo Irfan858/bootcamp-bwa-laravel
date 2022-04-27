@@ -1,22 +1,27 @@
 <?php
 
 namespace App\Http\Controllers\Backsite;
+
 use App\Http\Controllers\Controller;
 
-//Use library
+// use library here
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
-//Request
+// request
 use App\Http\Requests\Consultation\StoreConsultationRequest;
 use App\Http\Requests\Consultation\UpdateConsultationRequest;
 
-//Use Everything Here
-Use Gate;
+// use everything here
+use Gate;
 use Auth;
 
-//Use Model Here
-use App\Model\MasterData\Consutation;
+// use model here
+use App\Models\MasterData\Consultation;
+
+// thirdparty package
+
+
 
 
 class ConsultationController extends Controller

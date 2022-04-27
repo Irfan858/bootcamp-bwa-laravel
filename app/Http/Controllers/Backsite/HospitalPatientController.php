@@ -1,37 +1,39 @@
 <?php
 
 namespace App\Http\Controllers\Backsite;
+
 use App\Http\Controllers\Controller;
 
-//Use library
+// use library here
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpFoundation\Response;
 
-//Request
-
-//Use Everything Here
-Use Gate;
+// use everything here
+use Gate;
 use Auth;
 
-//Use Model Here
+// use model here
 use App\Models\User;
-
-//Operational
 use App\Models\Operational\Appointment;
 use App\Models\Operational\Transaction;
 use App\Models\Operational\Doctor;
-
-//Master Data
-use App\Model\MasterData\Specialist;
-use App\Model\MasterData\Consultation;
-use App\Model\MasterData\ConfigPayment;
+use App\Models\MasterData\Specialist;
+use App\Models\MasterData\Consultation;
+use App\Models\MasterData\ConfigPayment;
 
 class HospitalPatientController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->middleware('auth');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -39,15 +41,13 @@ class HospitalPatientController extends Controller
      */
     public function index()
     {
-        //use Gate
         abort_if(Gate::denies('hospital_patient_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        // For Table Grid
-        $hospital_patient = User::whereHas('detail_user', function(Builder $query){
-            $query->where('type_user_id', 3); // Only Load Patient Or id 3 In Type User Table
-        })->orderBy('created_at', 'desc')->get();
+        $hospital_patient = User::whereHas('detail_user', function ($query) {
+                                    return $query->where('type_user_id', 3);
+                                })->orderBy('created_at', 'desc')->get();
 
-        return view('pages.backsite.operational.doctor.index', compact('hospital_patient'));
+        return view('pages.backsite.operational.hospital-patient.index', compact('hospital_patient'));
     }
 
     /**

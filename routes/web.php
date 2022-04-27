@@ -13,6 +13,8 @@ use App\Http\Controllers\Backsite\SpecialistController;
 use App\Http\Controllers\Backsite\ReportTransactionController;
 use App\Http\Controllers\Backsite\ReportAppointmentController;
 use App\Http\Controllers\Backsite\ConsultationController;
+use App\Http\Controllers\Backsite\ConfigPaymentController;
+use App\Http\Controllers\Backsite\HospitalPatientController;
 
 
 //Frontsite

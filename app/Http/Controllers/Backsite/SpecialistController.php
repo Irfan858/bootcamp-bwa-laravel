@@ -17,7 +17,7 @@ use Gate;
 use Auth;
 
 //Use Model Here
-use App\Model\MasterData\Specialist;
+use App\Models\MasterData\Specialist;
 
 class SpecialistController extends Controller
 {

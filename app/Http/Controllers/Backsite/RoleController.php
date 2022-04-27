@@ -17,7 +17,7 @@ use Gate;
 use Auth;
 
 //Use Model Here
-use App\Model\ManagementAcess\Role;
+use App\Models\ManagementAccess\Role;
 
 class RoleController extends Controller
 {
@@ -37,9 +37,9 @@ class RoleController extends Controller
         abort_if(Gate::denies('role_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         //Take Data From Role Table
-        $role = Role::orderBy('name', 'asc')->get();
+        $role = Role::orderBy('title', 'asc')->get();
 
-        return view('pages.baciste.management-access.role.index', compact('role'));
+        return view('pages.backsite.management-access.role.index', compact('role'));
     }
 
     /**

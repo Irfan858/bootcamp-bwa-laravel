@@ -1,21 +1,23 @@
 <?php
-
 namespace App\Http\Controllers\Backsite;
+
 use App\Http\Controllers\Controller;
 
-//Use library
+// use library here
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\Response;
 
-//Request
+// request
 use App\Http\Requests\ConfigPayment\UpdateConfigPaymentRequest;
 
-//Use Everything Here
-//Use Gate
+// use everything here
+use Gate;
 use Auth;
 
-//Use Model Here
-use App\Model\MasterData\ConfgiPayment;
+// use model here
+use App\Models\MasterData\ConfigPayment;
+
+// thirdparty package
 
 class ConfigPaymentController extends Controller
 {

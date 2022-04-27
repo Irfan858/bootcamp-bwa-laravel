@@ -4,24 +4,34 @@ namespace App\Http\Controllers\Backsite;
 
 use App\Http\Controllers\Controller;
 
-//Use library
+// use library here
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-//Request
+// request
 use App\Http\Requests\Doctor\StoreDoctorRequest;
 use App\Http\Requests\Doctor\UpdateDoctorRequest;
 
-//Use Everything Here
-Use Gate;
+// use everything here
+use Gate;
 use Auth;
+use File;
 
-//Use Model Here
-use App\Model\Operational\Doctor;
-use App\Model\MasterData\Specialist;
+// use model here
+use App\Models\Operational\Doctor;
+use App\Models\MasterData\Specialist;
+
+// thirdparty package
 
 class DoctorController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->middleware('auth');
@@ -34,17 +44,15 @@ class DoctorController extends Controller
      */
     public function index()
     {
-        //Secure Access Role with abort_if
         abort_if(Gate::denies('doctor_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        //For Table Grid
+        // for table grid
         $doctor = Doctor::orderBy('created_at', 'desc')->get();
 
-        //For Select to (Use Ascending Order)
+        // for select2 = ascending a to z
         $specialist = Specialist::orderBy('name', 'asc')->get();
 
-
-        return view ('pages.backsite.operational.doctor.index', compact('doctor','specialist'));
+        return view('pages.backsite.operational.doctor.index', compact('doctor', 'specialist'));
     }
 
     /**
@@ -65,13 +73,32 @@ class DoctorController extends Controller
      */
     public function store(StoreDoctorRequest $request)
     {
-        //get all data from frontsite
+        // get all request from frontsite
         $data = $request->all();
 
-        //store to database
+        // re format before push to table
+        $data['fee'] = str_replace(',', '', $data['fee']);
+        $data['fee'] = str_replace('IDR ', '', $data['fee']);
+
+        // upload process here
+        $path = public_path('app/public/assets/file-doctor');
+        if(!File::isDirectory($path)){
+            $response = Storage::makeDirectory('public/assets/file-doctor');
+        }
+
+        // change file locations
+        if(isset($data['photo'])){
+            $data['photo'] = $request->file('photo')->store(
+                'assets/file-doctor', 'public'
+            );
+        }else{
+            $data['photo'] = "";
+        }
+
+        // store to database
         $doctor = Doctor::create($data);
 
-        alert()->success('Success Message', 'Successfully Added New Doctor');
+        alert()->success('Success Message', 'Successfully added new doctor');
         return redirect()->route('backsite.doctor.index');
     }
 
@@ -96,10 +123,12 @@ class DoctorController extends Controller
      */
     public function edit(Doctor $doctor)
     {
-          //For Select to (Use Ascending Order)
-          $specialist = Specialist::orderBy('name', 'asc')->get();
+        abort_if(Gate::denies('doctor_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-          return view('pages.backsite.operational.doctor.edit', compact('doctor', 'specialist'));
+        // for select2 = ascending a to z
+        $specialist = Specialist::orderBy('name', 'asc')->get();
+
+        return view('pages.backsite.operational.doctor.edit', compact('doctor', 'specialist'));
     }
 
     /**
@@ -111,14 +140,40 @@ class DoctorController extends Controller
      */
     public function update(UpdateDoctorRequest $request, Doctor $doctor)
     {
-         //get all data from frontsite
-         $data = $request->all();
+        // get all request from frontsite
+        $data = $request->all();
 
-         //update to database
-         $doctor->update($data);
+        // re format before push to table
+        $data['fee'] = str_replace(',', '', $data['fee']);
+        $data['fee'] = str_replace('IDR ', '', $data['fee']);
 
-         alert()->success('Success Message', 'Successfully Added New Specialist');
-         return redirect()->route('backsite.doctor.index');
+        // upload process here
+        // change format photo
+        if(isset($data['photo'])){
+
+             // first checking old photo to delete from storage
+            $get_item = $doctor['photo'];
+
+            // change file locations
+            $data['photo'] = $request->file('photo')->store(
+                'assets/file-doctor', 'public'
+            );
+
+            // delete old photo from storage
+            $data_old = 'storage/'.$get_item;
+            if (File::exists($data_old)) {
+                File::delete($data_old);
+            }else{
+                File::delete('storage/app/public/'.$get_item);
+            }
+
+        }
+
+        // update to database
+        $doctor->update($data);
+
+        alert()->success('Success Message', 'Successfully updated doctor');
+        return redirect()->route('backsite.doctor.index');
     }
 
     /**
@@ -130,10 +185,20 @@ class DoctorController extends Controller
     public function destroy(Doctor $doctor)
     {
         abort_if(Gate::denies('doctor_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        // first checking old file to delete from storage
+        $get_item = $doctor['photo'];
+
+        $data = 'storage/'.$get_item;
+        if (File::exists($data)) {
+            File::delete($data);
+        }else{
+            File::delete('storage/app/public/'.$get_item);
+        }
+
         $doctor->forceDelete();
 
-        alert()->success('Success Message', 'Successfully deleted Doctor');
-
+        alert()->success('Success Message', 'Successfully deleted doctor');
         return back();
     }
 }
