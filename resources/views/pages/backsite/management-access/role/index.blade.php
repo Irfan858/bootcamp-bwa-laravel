@@ -1,20 +1,22 @@
 @extends('layouts.app')
 
+{{-- set title --}}
 @section('title', 'Role')
 
 @section('content')
 
-    <!-- BEGIN: Content-->
+<!-- BEGIN: Content-->
     <div class="app-content content">
         <div class="content-overlay"></div>
         <div class="content-wrapper">
 
-            {{-- Error --}}
+            {{-- error --}}
             @if ($errors->any())
-                <div class="alert bg-danger alert-dismissable mb-2" role="alert">
+                <div class="alert bg-danger alert-dismissible mb-2" role="alert">
                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
+
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -23,7 +25,7 @@
                 </div>
             @endif
 
-            {{-- Breadcrumb --}}
+            {{-- breadcumb --}}
             <div class="content-header row">
                 <div class="content-header-left col-md-6 col-12 mb-2 breadcrumb-new">
                     <h3 class="content-header-title mb-0 d-inline-block">Role</h3>
@@ -38,7 +40,7 @@
                 </div>
             </div>
 
-            {{-- Add Card --}}
+            {{-- add card --}}
             @can('role_create')
                 <div class="content-body">
                     <section id="add-home">
@@ -49,8 +51,7 @@
                                     <div class="card-header bg-success text-white">
                                         <a data-action="collapse">
                                             <h4 class="card-title text-white">Add Data</h4>
-                                            <a class="heading-elements-toggle"><i
-                                                    class="la la-ellipsis-v font-medium-3"></i></a>
+                                            <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                                             <div class="heading-elements">
                                                 <ul class="list-inline mb-0">
                                                     <li><a data-action="collapse"><i class="ft-plus"></i></a></li>
@@ -63,28 +64,22 @@
                                     <div class="card-content collapse hide">
                                         <div class="card-body card-dashboard">
 
-                                            <form class="form form-horizontal" action="{{ route('backsite.role.store') }}"
-                                                method="POST" enctype="multipart/form-data">
+                                            <form class="form form-horizontal" action="{{ route('backsite.role.store') }}" method="POST" enctype="multipart/form-data">
 
                                                 @csrf
 
                                                 <div class="form-body">
                                                     <div class="form-section">
-                                                        <p>Please complete the input <code>required</code>, before you click the
-                                                            submit button.</p>
+                                                        <p>Please complete the input <code>required</code>, before you click the submit button.</p>
                                                     </div>
 
                                                     <div class="form-group row">
-                                                        <label class="col-md-3 label-control" for="title">Role <code
-                                                                style="color:red;">required</code></label>
+                                                        <label class="col-md-3 label-control" for="title">Role <code style="color:red;">required</code></label>
                                                         <div class="col-md-9 mx-auto">
-                                                            <input type="text" id="title" name="title" class="form-control"
-                                                                placeholder="example admin or users"
-                                                                value="{{ old('title') }}" autocomplete="off" required>
+                                                            <input type="text" id="title" name="title" class="form-control" placeholder="example admin or users" value="{{old('title')}}" autocomplete="off" required>
 
-                                                            @if ($errors->has('title'))
-                                                                <p style="font-style: bold; color: red;">
-                                                                    {{ $errors->first('title') }}</p>
+                                                            @if($errors->has('title'))
+                                                                <p style="font-style: bold; color: red;">{{ $errors->first('title') }}</p>
                                                             @endif
                                                         </div>
                                                     </div>
@@ -92,8 +87,7 @@
                                                 </div>
 
                                                 <div class="form-actions text-right">
-                                                    <button type="submit" style="width:120px;" class="btn btn-cyan"
-                                                        onclick="return confirm('Are you sure want to save this data ?')">
+                                                    <button type="submit" style="width:120px;" class="btn btn-cyan" onclick="return confirm('Are you sure want to save this data ?')">
                                                         <i class="la la-check-square-o"></i> Submit
                                                     </button>
                                                 </div>
@@ -109,7 +103,7 @@
                 </div>
             @endcan
 
-            {{-- Table Card --}}
+            {{-- table card --}}
             @can('role_table')
                 <div class="content-body">
                     <section id="table-home">
@@ -133,8 +127,7 @@
                                         <div class="card-body card-dashboard">
 
                                             <div class="table-responsive">
-                                                <table
-                                                    class="table table-striped table-bordered text-inputs-searching default-table">
+                                                <table class="table table-striped table-bordered text-inputs-searching default-table">
                                                     <thead>
                                                         <tr>
                                                             <th>Date</th>
@@ -146,45 +139,36 @@
                                                     <tbody>
                                                         @forelse($role as $key => $role_item)
                                                             <tr data-entry-id="{{ $role_item->id }}">
-                                                                <td>{{ isset($role_item->created_at) ? date('d/m/Y H:i:s', strtotime($role_item->created_at)) : '' }}
-                                                                </td>
+                                                                <td>{{ isset($role_item->created_at) ? date("d/m/Y H:i:s",strtotime($role_item->created_at)) : '' }}</td>
                                                                 <td>{{ $role_item->title ?? '' }}</td>
-                                                                <td>{{ count($role_item->permission) . ' Permissions' }}</td>
+                                                                <td>{{ count($role_item->permission).' Permissions' }}</td>
                                                                 <td class="text-center">
 
                                                                     <div class="btn-group mr-1 mb-1">
-                                                                        <button type="button"
-                                                                            class="btn btn-info btn-sm dropdown-toggle"
-                                                                            data-toggle="dropdown" aria-haspopup="true"
-                                                                            aria-expanded="false">Action</button>
+                                                                        <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>
                                                                         <div class="dropdown-menu">
                                                                             @can('role_show')
                                                                                 <a href="#mymodal"
                                                                                     data-remote="{{ route('backsite.role.show', $role_item->id) }}"
-                                                                                    data-toggle="modal" data-target="#mymodal"
-                                                                                    data-title="Role Detail" class="dropdown-item">
+                                                                                    data-toggle="modal"
+                                                                                    data-target="#mymodal"
+                                                                                    data-title="Role Detail"
+                                                                                    class="dropdown-item">
                                                                                     Show
                                                                                 </a>
                                                                             @endcan
                                                                             @can('role_edit')
-                                                                                <a class="dropdown-item"
-                                                                                    href="{{ route('backsite.role.edit', $role_item->id) }}">
+                                                                                <a class="dropdown-item" href="{{ route('backsite.role.edit', $role_item->id) }}">
                                                                                     Edit
                                                                                 </a>
                                                                             @endcan
 
-                                                                            @if ($role_item->id > 3)
+                                                                            @if($role_item->id > 3)
                                                                                 @can('role_delete')
-                                                                                    <form
-                                                                                        action="{{ route('backsite.role.destroy', $role_item->id) }}"
-                                                                                        method="POST"
-                                                                                        onsubmit="return confirm('Are you sure want to delete this data ?');">
-                                                                                        <input type="hidden" name="_method"
-                                                                                            value="DELETE">
-                                                                                        <input type="hidden" name="_token"
-                                                                                            value="{{ csrf_token() }}">
-                                                                                        <input type="submit" class="dropdown-item"
-                                                                                            value="Delete">
+                                                                                    <form action="{{ route('backsite.role.destroy', $role_item->id) }}" method="POST" onsubmit="return confirm('Are you sure want to delete this data ?');">
+                                                                                        <input type="hidden" name="_method" value="DELETE">
+                                                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                                                                                        <input type="submit" class="dropdown-item" value="Delete">
                                                                                     </form>
                                                                                 @endcan
                                                                             @endif
@@ -219,27 +203,27 @@
 
         </div>
     </div>
-    <!-- END: Content-->
+<!-- END: Content-->
 
 @endsection
 
 @push('after-script')
+
     <script>
-        jQuery(document).ready(function($) {
-            $('#mymodal').on('show.bs.modal', function(e) {
+        jQuery(document).ready(function($){
+            $('#mymodal').on('show.bs.modal', function(e){
                 var button = $(e.relatedTarget);
                 var modal = $(this);
+
                 modal.find('.modal-body').load(button.data("remote"));
                 modal.find('.modal-title').html(button.data("title"));
             });
         });
-        $('.default-table').DataTable({
+
+        $('.default-table').DataTable( {
             "order": [],
             "paging": true,
-            "lengthMenu": [
-                [5, 10, 25, 50, 100, -1],
-                [5, 10, 25, 50, 100, "All"]
-            ],
+            "lengthMenu": [ [5, 10, 25, 50, 100, -1], [5, 10, 25, 50, 100, "All"] ],
             "pageLength": 10
         });
     </script>
@@ -259,4 +243,5 @@
             </div>
         </div>
     </div>
+
 @endpush

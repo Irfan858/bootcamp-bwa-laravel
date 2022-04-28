@@ -18,6 +18,9 @@ use Auth;
 
 //Use Model Here
 use App\Models\ManagementAccess\Role;
+use App\Models\ManagementAccess\RoleUser;
+use App\Models\ManagementAccess\Permission;
+use App\Models\ManagementAccess\PermissionRole;
 
 class RoleController extends Controller
 {
@@ -83,7 +86,7 @@ class RoleController extends Controller
 
         $role->load('permission');
 
-        return view('pages.baciste.management-access.role.show', compact('role'));
+        return view('pages.backsite.management-access.role.show', compact('role'));
     }
 
     /**
@@ -101,7 +104,9 @@ class RoleController extends Controller
 
         $role->load('permission');
 
-        return view('pages.baciste.management-access.role.edit', compact('role'));
+        return view('pages.backsite.management-access.role.edit', compact('permission','role'));
+
+
     }
 
     /**
