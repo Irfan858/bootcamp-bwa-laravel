@@ -98,7 +98,7 @@ class ConfigPaymentController extends Controller
         $config_payment->update($data);
 
         alert()->success('Success Message', 'Successfully updated config payment');
-        return redirect()->route('backsite.config_payment.index');
+        return redirect()->route('backsite.config-payment.index');
     }
 
     /**
