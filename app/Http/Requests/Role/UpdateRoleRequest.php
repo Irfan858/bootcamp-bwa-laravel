@@ -7,6 +7,9 @@ use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Symfony\Component\HttpFoundation\Response;
 
+// this rule only at update request
+use Illuminate\Validation\Rule;
+
 class UpdateRoleRequest extends FormRequest
 {
     /**
@@ -30,7 +33,7 @@ class UpdateRoleRequest extends FormRequest
     {
         return [
             'title' => [
-                'required','email','max:255', Rule::unique('role')->ignore($this->role),
+                'required','string','max:255', Rule::unique('role')->ignore($this->role),
             ],
         ];
     }
