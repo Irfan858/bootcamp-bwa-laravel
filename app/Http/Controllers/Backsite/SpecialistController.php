@@ -112,17 +112,18 @@ class SpecialistController extends Controller
      */
     public function update(UpdateSpecialistRequest $request, Specialist $specialist)
     {
-         // get all request from frontsite
-       $data = $request($data);
+        // get all request from frontsite
+        $data = $request->all();
 
-       $data['price'] = str_replace(',', '', $data['price']);
-       $data['price'] = str_replace('IDR ', '', $data['price']);
 
-       //update to database
-       $specialist->update($data);
+        $data['price'] = str_replace(',', '', $data['price']);
+        $data['price'] = str_replace('IDR ', '', $data['price']);
 
-         alert()->success('Success Message', 'Successfully Added New Specialist');
-         return redirect()->route('backsite.specialist.index');
+        // update to database
+        $specialist->update($data);
+
+        alert()->success('Success Message', 'Successfully updated specialist');
+        return redirect()->route('backsite.specialist.index');
     }
 
     /**
