@@ -63,7 +63,7 @@ class ConsultationController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Consultation $consultation)
+    public function store(StoreConsultationRequest $request)
     {
         //get all data from frontsite
         $data = $request->all();
@@ -100,7 +100,7 @@ class ConsultationController extends Controller
         //use Gate
         abort_if(Gate::denies('consultation_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return view('pages.backsite.master-data.consultation.show', compact('consultation'));
+        return view('pages.backsite.master-data.consultation.edit', compact('consultation'));
     }
 
     /**
